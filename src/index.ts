@@ -3,7 +3,7 @@ declare global {
     gl?: WebGLRenderingContext;
   }
 }
-import { Engine } from "./engine/Engine";
+import { Engine } from "./Engine/Engine";
 
 var engine: Engine;
 
