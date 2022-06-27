@@ -3,9 +3,9 @@
  * this class makes and compiles Shader to use in games
  *
  */
-class Shader {
+export default class Shader {
   private __name: string;
-  private _programe: WebGLProgram;
+  private _program: WebGLProgram;
 
   public constructor(_name, _vertexShader: string, _fragmentShader: string) {
     this.__name = _name;
@@ -15,7 +15,7 @@ class Shader {
       window.gl.FRAGMENT_SHADER
     );
 
-    this._programe = this.createPrograme();
+    this.createPrograme(vertexShader, fragmentShader);
   }
 
   private loadshader(source: string, shaderType: number): WebGLShader {
@@ -25,6 +25,7 @@ class Shader {
     window.gl.compileShader(shader);
     let shaderLog = window.gl.getShaderInfoLog(shader);
     if (shaderLog) {
+      console.log("Aborting....");
       throw new Error(
         "Shader Compiling Error " + shaderLog + source + ".Name: " + this.__name
       );
@@ -32,8 +33,21 @@ class Shader {
 
     return shader;
   }
-  private createPrograme(): WebGLProgram {
-    return;
+  private createPrograme(vertexShader, fragmentShader): void {
+    this._program = window.gl.createProgram();
+
+    window.gl.attachShader(this._program, vertexShader);
+    window.gl.attachShader(this._program, fragmentShader);
+
+    window.gl.linkProgram(this._program);
+
+    let error = window.gl.getProgramInfoLog(this._program);
+    if (error) {
+      console.log("Aborting....");
+      throw new Error(
+        `Error linking Program. For Shader ${this.__name} Error: ${error}.`
+      );
+    }
   }
 
   public get name(): string {

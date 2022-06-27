@@ -16,6 +16,10 @@ module.exports = () => ({
         exclude: "/node_modules/",
         loader: "awesome-typescript-loader",
       },
+      {
+        test: /\.glsl?$/,
+        loader: "webpack-glsl-loader",
+      },
     ],
   },
   mode: "development",

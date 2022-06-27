@@ -1,4 +1,7 @@
-import { glUtili } from "./gl";
+import glUtili from "./gl";
+import Shader from "./Shader";
+import VertexShaderText from "./Vertex.glsl";
+import FragmentShaderText from "./Fragment.glsl";
 let gl = window.gl as WebGLRenderingContext;
 /**
  * The Main Engine Class For WEBUNREAL
@@ -6,6 +9,7 @@ let gl = window.gl as WebGLRenderingContext;
 export class Engine {
   private _count: number = 0;
   private _canves: HTMLCanvasElement;
+  private _shader: Shader;
 
   public constructor() {
     document.body.innerHTML = "";
@@ -15,7 +19,7 @@ export class Engine {
     this._canves = glUtili.Init();
 
     window.gl.clearColor(1, 0, 0, 1);
-
+    console.log(VertexShaderText);
     this.loop();
   }
   public resize() {
@@ -31,5 +35,8 @@ export class Engine {
     window.gl.clear(window.gl.COLOR_BUFFER_BIT || window.gl.DEPTH_BUFFER_BIT);
 
     requestAnimationFrame(this.loop.bind(this));
+  }
+  private loadShader(): void {
+    this._shader = new Shader("MyShader", VertexShaderText, FragmentShaderText);
   }
 }
